@@ -8,15 +8,14 @@ set_perm_recursive "$MODPATH" 0 0 0755 0644
 set_perm_recursive "$MODPATH/boot_config.sh" 0 2000 0755 0755
 
 uprint() {
-	if [ "$1" = "n" ]; then
-		ui_print ""
-		ui_print "  $2"
-	else
-		ui_print "  $1"
-	fi
+	ui_print "$1"
 }
 
 . $MODPATH/boot_config.sh
 
+cat <<EOF
+
+> Applying props
+EOF
 approps $MODPATH/system.prop
 relmkd

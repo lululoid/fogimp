@@ -4,7 +4,9 @@ setval() {
 	file=$2
 
 	echo $value >$file && {
-		uprint n $file || echo $file
+		cat <<EOF
+  $file 
+EOF
 		echo "  $(cat $file)" || uprint "  $(cat $file)"
 	}
 }
@@ -16,11 +18,14 @@ approps() {
 	grep -v '^ *#' "$prop_file" |
 		while IFS='=' read -r prop value; do
 			resetprop -n -p $prop $value
-			uprint n "$prop"
+			cat <<EOF
+
+  $prop 
+EOF
 			{
 				[ "$(getprop $prop)" == ${value//=/ } ] &&
-					uprint $value
-			} || uprint "! Failed"
+					uprint "  $value"
+			} || uprint "  ! Failed"
 		done
 }
 
