@@ -11,3 +11,4 @@ ro.lmk.psi_complete_stall_ms=700
 ro.lmk.kill_heaviest_task=true
 ro.lmk.swap_util_max=60
 persist.sys.miui.camera.boost.opt=false
+ro.config.low_ram.support_miuilite_plus=false
