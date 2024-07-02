@@ -11,6 +11,15 @@ EOF
 	}
 }
 
+rm_prop() {
+	for prop in "$@"; do
+		resetprop -d $prop && cat <<EOF
+
+X $prop deleted
+EOF
+	done
+}
+
 approps() {
 	prop_file=$1
 
