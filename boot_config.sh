@@ -1,13 +1,15 @@
 # shellcheck disable=SC3043,SC2034,SC2086,SC3060,SC3010,SC2046
+alias uprint="ui_print"
+
 setval() {
 	value=$1
 	file=$2
 
 	echo $value >$file && {
 		cat <<EOF
-  $file 
+  › $file 
 EOF
-		echo "  $(cat $file)" || uprint "  $(cat $file)"
+		echo "  » $(cat $file)"
 	}
 }
 
@@ -28,13 +30,14 @@ approps() {
 		while IFS='=' read -r prop value; do
 			resetprop -n -p $prop $value
 			cat <<EOF
-
-  $prop 
+  › $prop 
 EOF
 			{
 				[ "$(getprop $prop)" == ${value//=/ } ] &&
-					uprint "  $value"
-			} || uprint "  ! Failed"
+					uprint "  » $value
+"
+			} || uprint "  ! Failed
+"
 		done
 }
 
@@ -46,6 +49,7 @@ while [ $(resetprop sys.boot_completed) -ne 1 ]; do
 	sleep 1
 done
 
+uprint "⟩ Applying tweaks"
 setval none /sys/block/mmcblk0/queue/scheduler
 # setval 2048 /sys/devices/virtual/bdi/179:0/read_ahead_kb
-setval 100 /proc/sys/vm/swappiness
+setval 120 /proc/sys/vm/swappiness

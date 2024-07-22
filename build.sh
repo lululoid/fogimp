@@ -39,5 +39,4 @@ module_name=$(sed -n 's/^id=\(.*\)/\1/p' module.prop)
 	boot_config.sh \
 	customize.sh \
 	module.prop \
-	service.sh \
-	system.prop
+	service.sh
