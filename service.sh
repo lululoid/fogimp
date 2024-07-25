@@ -3,17 +3,11 @@ MODDIR=${0%/*}
 NVBASE=/data/adb
 # shellcheck disable=SC2034
 BIN=/system/bin
+LOG=$NVBASE/fogimp.log
 
-exec 3>&1 1>>"$NVBASE/fogimp.log" 2>&1
+exec 3>&1 1>>$LOG 2>&1
 set -x # Prints commands, prefixing them with a character stored in an environmental variable ($PS4)
-
-until [ $(resetprop sys.boot_completed) -eq 1 ] &&
-	[ -d /sdcard ]; do
-	sleep 5
-done
-
-if [ -d /data/adb/modules/ktweak ]; then
-	sleep 1m
-fi
+echo "
+⟩ $(date -Is)" >>$LOG
 
 . $MODDIR/boot_config.sh
