@@ -17,55 +17,31 @@ set_permissions() {
 	set_perm_recursive "$MODPATH/system/bin" 0 2000 0755 0755
 }
 
-# ktweak is insignificant in this tweak
-# because swap will make a high io anyway so it
-# meaningless to try to make your device smoother
-remove_ktweak_module() {
-	[ -d $NVBASE/modules/ktweak ] || [ -d $NVBASE/modules_update/ktweak ] && {
-		uprint "  › Removing Ktweak module"
-		krmcode=0
-		touch $NVBASE/modules/ktweak/remove && krmcode=$((krmcode + 1))
-		$BIN/rm -rf $NVBASE/modules_update/ktweak && krmcode=$((krmcode + 1))
-		[ $krmcode -gt 0 ] && uprint "  » Ktweak module is removed. Reboot after installation is finished.
-"
-	}
-}
-
 main() {
-	uprint "
-⟩ Applying props"
+	uprint "⟩ Applying props"
 
-	# If swap exist use this props instead
-	if grep file -q /proc/swaps; then
-		cat <<EOF >$MODPATH/system.prop
-ro.lmk.thrashing_limit_decay=80
-ro.lmk.upgrade_pressure=40
-ro.lmk.downgrade_pressure=50
-ro.lmk.psi_partial_stall_ms=40
-ro.lmk.psi_complete_stall_ms=500
-ro.lmk.swap_free_low_percentage=5
-persist.device_config.lmkd_native.thrashing_limit_critical=60
+	cat <<EOF >$MODPATH/system.prop
+persist.device_config.lmkd_native.thrashing_limit_critical=100
 persist.sys.miui.camera.boost.opt=false
-ro.config.low_ram.support_miuilite_plus=false
+ro.lmk.low=1001
+ro.lmk.medium=800
+ro.lmk.critical=0 
+ro.lmk.critical_upgrade=false
+ro.lmk.upgrade_pressure=100
+ro.lmk.downgrade_pressure=100
+ro.lmk.kill_heaviest_task=true
+ro.lmk.psi_partial_stall_ms=70
+ro.lmk.psi_complete_stall_ms=700
+ro.lmk.thrashing_limit_decay=10 
+ro.lmk.swap_util_max=100 
+ro.lmk.swap_free_low_percentage=20
 EOF
 
-		approps $MODPATH/system.prop
-		remove_ktweak_module
-	else
-		cat <<EOF >$MODPATH/system.prop
-ro.lmk.thrashing_limit_decay=80
-ro.lmk.upgrade_pressure=50
-ro.lmk.downgrade_pressure=60
-persist.device_config.lmkd_native.thrashing_limit_critical=60
-persist.sys.miui.camera.boost.opt=false
-ro.config.low_ram.support_miuilite_plus=false
-EOF
-
-		approps $MODPATH/system.prop
-	fi
+	approps $MODPATH/system.prop
 
 	relmkd
-	uprint "⟩ lmkd reinitialized"
+	uprint "⟩ lmkd reinitialized
+	"
 }
 
 set_permissions
