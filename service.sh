@@ -10,4 +10,8 @@ set -x # Prints commands, prefixing them with a character stored in an environme
 echo "
 ⟩ $(date -Is)" >>$LOG
 
+if [ -d $NVBASE/modules/ktweak ] || [ -d $NVBASE/modules/Hc_memory ]; then
+	sleep 1m
+fi
+
 . $MODDIR/boot_config.sh
