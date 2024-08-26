@@ -18,10 +18,31 @@ EOF
 rm_prop() {
 	for prop in "$@"; do
 		resetprop -d $prop && cat <<EOF
+  × $prop deleted
 
-X $prop deleted
 EOF
 	done
+}
+
+lmkd_props_clean() {
+	set --
+	set \
+		"ro.lmk.low" \
+		"ro.lmk.medium" \
+		"ro.lmk.critical" \
+		"ro.lmk.critical_upgrade" \
+		"ro.lmk.kill_heaviest_task" \
+		"ro.lmk.kill_timeout_ms" \
+		"ro.lmk.psi_partial_stall_ms" \
+		"ro.lmk.psi_complete_stall_ms" \
+		"ro.lmk.thrashing_limit_decay" \
+		"ro.lmk.swap_util_max" \
+		"sys.lmk.minfree_levels" \
+		"ro.lmk.upgrade_pressure" \
+		"ro.lmk.downgrade_pressure" \
+		"persist.device_config.lmkd_native.thrashing_limit_critical" \
+		"ro.lmk.swap_free_low_percentage"
+	rm_prop "$@"
 }
 
 approps() {

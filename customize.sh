@@ -20,22 +20,22 @@ set_permissions() {
 main() {
 	uprint "⟩ Applying props"
 
+	lmkd_props_clean
 	cat <<EOF >$MODPATH/system.prop
-persist.device_config.lmkd_native.thrashing_limit_critical=100
 persist.sys.miui.camera.boost.opt=false
-ro.lmk.low=1001
-ro.lmk.medium=800
-ro.lmk.critical=0 
-ro.lmk.critical_upgrade=false
-ro.lmk.upgrade_pressure=100
-ro.lmk.downgrade_pressure=100
 ro.lmk.kill_heaviest_task=true
-ro.lmk.psi_partial_stall_ms=70
-ro.lmk.psi_complete_stall_ms=700
-ro.lmk.thrashing_limit_decay=10 
-ro.lmk.swap_util_max=100 
-ro.lmk.swap_free_low_percentage=20
 EOF
+
+	if grep -q file /proc/swaps; then
+		cat <<EOF >>$MODPATH/system.prop
+ro.lmk.swap_util_max=60
+EOF
+	else
+		cat <<EOF >>$MODPATH/system.prop
+ro.lmk.swap_util_max=100
+ro.lmk.downgrade_pressure=100
+EOF
+	fi
 
 	approps $MODPATH/system.prop
 
