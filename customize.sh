@@ -28,8 +28,10 @@ EOF
 
 	if grep -q file /proc/swaps; then
 		cat <<EOF >>$MODPATH/system.prop
-persist.device_config.lmkd_native.thrashing_limit_critical=150
+persist.device_config.lmkd_native.thrashing_limit_critical=100
 ro.lmk.swap_util_max=60
+ro.lmk.thrashing_limit_decay=60
+ro.lmk.psi_partial_stall_ms=70
 EOF
 	else
 		cat <<EOF >>$MODPATH/system.prop
