@@ -26,12 +26,12 @@ persist.sys.miui.camera.boost.opt=false
 ro.lmk.kill_heaviest_task=true
 EOF
 
-	if grep -q file /proc/swaps; then
+	memory_extension_state=$(getprop persist.miui.extm.enable)
+	if grep -q file /proc/swaps || [ $memory_extension_state -eq 1 ]; then
 		cat <<EOF >>$MODPATH/system.prop
-persist.device_config.lmkd_native.thrashing_limit_critical=100
 ro.lmk.swap_util_max=60
-ro.lmk.thrashing_limit_decay=60
-ro.lmk.psi_partial_stall_ms=70
+ro.lmk.psi_partial_stall_ms=60
+ro.lmk.psi_complete_stall_ms=650
 EOF
 	else
 		cat <<EOF >>$MODPATH/system.prop
