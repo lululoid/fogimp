@@ -1,5 +1,6 @@
 # shellcheck disable=SC3043,SC2034,SC2086,SC3060,SC3010
 SKIPUNZIP=1
+NVBASE=/data/adb
 LOG=$NVBASE/fogimp.log
 
 exec 3>&1 1>>$LOG 2>&1
@@ -32,10 +33,12 @@ EOF
 ro.lmk.swap_util_max=60
 ro.lmk.psi_partial_stall_ms=60
 ro.lmk.psi_complete_stall_ms=650
+ro.lmk.thrashing_limit_decay=80
 EOF
 	else
 		cat <<EOF >>$MODPATH/system.prop
-ro.lmk.swap_util_max=100
+ro.lmk.swap_util_max=75
+ro.lmk.thrashing_limit_decay=80
 EOF
 	fi
 
