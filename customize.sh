@@ -24,7 +24,10 @@ main() {
 	lmkd_props_clean
 	cat <<EOF >$MODPATH/system.prop
 persist.sys.miui.camera.boost.opt=false
-ro.lmk.kill_heaviest_task=true
+ro.lmk.kill_heaviest_task=false
+persist.device_config.lmkd_native.thrashing_limit_critical=200
+ro.lmk.psi_partial_stall_ms=60
+ro.lmk.psi_complete_stall_ms=600
 EOF
 
 	memory_extension_state=$(getprop persist.miui.extm.enable)

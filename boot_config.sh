@@ -87,4 +87,3 @@ for sched in cfq noop kyber bfq mq-deadline none; do
 done
 setval 1024 /sys/devices/virtual/bdi/179:0/read_ahead_kb
 setval 100 /proc/sys/vm/swappiness
-resetprop -v ro.lmk.kill_heaviest_task true
