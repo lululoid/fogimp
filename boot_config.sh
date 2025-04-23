@@ -86,4 +86,4 @@ for sched in cfq noop kyber bfq mq-deadline none; do
 	fi
 done
 setval 1024 /sys/devices/virtual/bdi/179:0/read_ahead_kb
-setval 100 /proc/sys/vm/swappiness
+[ ! -d /data/adb/modules/fmiop ] && setval 100 /proc/sys/vm/swappiness
