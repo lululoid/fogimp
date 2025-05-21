@@ -21,33 +21,20 @@ set_permissions() {
 main() {
 	uprint "⟩ Applying props"
 
-	lmkd_props_clean
 	cat <<EOF >$MODPATH/system.prop
 persist.sys.miui.camera.boost.opt=false
 ro.lmk.kill_heaviest_task=false
 persist.device_config.lmkd_native.thrashing_limit_critical=200
-ro.lmk.psi_partial_stall_ms=60
-ro.lmk.psi_complete_stall_ms=600
 ro.config.low_ram.threshold_gb=false
 EOF
 
-	memory_extension_state=$(getprop persist.miui.extm.enable)
-	if grep -q file /proc/swaps || [ $memory_extension_state -eq 1 ]; then
-		cat <<EOF >>$MODPATH/system.prop
-ro.lmk.swap_util_max=60
-ro.lmk.psi_partial_stall_ms=60
-ro.lmk.psi_complete_stall_ms=650
+	cat <<EOF >>$MODPATH/system.prop
 ro.lmk.thrashing_limit_decay=80
-EOF
-	else
-		cat <<EOF >>$MODPATH/system.prop
+ro.lmk.psi_partial_stall_ms=140
 ro.lmk.swap_util_max=75
-ro.lmk.thrashing_limit_decay=80
 EOF
-	fi
 
 	approps $MODPATH/system.prop
-
 	relmkd
 	uprint "⟩ lmkd reinitialized
 	"

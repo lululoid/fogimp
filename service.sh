@@ -15,3 +15,4 @@ if [ -d $NVBASE/modules/ktweak ] || [ -d $NVBASE/modules/Hc_memory ]; then
 fi
 
 . $MODDIR/boot_config.sh
+approps $MODDIR/system.prop
